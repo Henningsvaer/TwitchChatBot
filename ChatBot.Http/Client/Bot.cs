@@ -15,6 +15,7 @@ namespace ChatBot.Http.Bot.Client
     {
         private IConfiguration _configuration;
         private TwitchClient _client;
+        // TODO: BotConfig должен создаваться выше и Program чтобы там создавался экземпляр с готовыми конфигами
         private BotConfig _botConfig;
 
         public Bot(IConfiguration configuration)
