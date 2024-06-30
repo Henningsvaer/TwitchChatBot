@@ -1,4 +1,5 @@
-﻿using ChatBot.Interfaces.Client;
+﻿using ChatBot.Http.Bot.Config;
+using ChatBot.Interfaces.Client;
 using Microsoft.Extensions.Configuration;
 using TwitchLib.Client;
 using TwitchLib.Client.Enums;
@@ -14,12 +15,20 @@ namespace ChatBot.Http.Bot.Client
     {
         private IConfiguration _configuration;
         private TwitchClient _client;
+        private BotConfig _botConfig;
 
         public Bot(IConfiguration configuration)
         {
+            // Init
             _configuration = configuration;
+            _botConfig = new BotConfig()
+            {
+                BotName = _configuration.GetSection("identity:username").Value,
+                PasswordOAuth = _configuration.GetSection("identity:password").Value
+            };
+            _botConfig.ChannelNames.Add(_configuration.GetSection("channel").Value);
 
-            var credentials = new ConnectionCredentials("HenningBot", "4ez3nzdxi5e7s5hddfya8wjcrydg2h");
+            var credentials = new ConnectionCredentials(_botConfig.BotName, _botConfig.PasswordOAuth);
             var clientOptions = new ClientOptions
             {
                 MessagesAllowedInPeriod = 750,
@@ -27,7 +36,8 @@ namespace ChatBot.Http.Bot.Client
             };
             WebSocketClient customClient = new WebSocketClient(clientOptions);
             _client = new TwitchClient(customClient);
-            _client.Initialize(credentials, "Henningnorthernlights");
+            // TODO: Может использоваться на нескольких каналах
+            _client.Initialize(credentials, _botConfig.ChannelNames[0]);
 
             _client.OnLog += Client_OnLog;
             _client.OnJoinedChannel += Client_OnJoinedChannel;

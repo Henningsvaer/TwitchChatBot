@@ -2,12 +2,20 @@
 using ChatBot.Interfaces.Client;
 using Microsoft.Extensions.Configuration;
 
-//https://dev.twitch.tv/docs/irc/get-started/
-//https://dev.twitch.tv/console/apps/4ez3nzdxi5e7s5hddfya8wjcrydg2h
-// TODO: Add settings from json 
-IConfiguration configuration = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.Development.json", optional: true)
-    .Build();
+var path = $"C:\\Users\\henni\\OneDrive\\Документы\\GitHub\\TwitchChatBot\\ChatBot\\Config";
+var settingsDev = "appsettings.Development.json";
 
-IBot bot = new Bot(configuration);
+try
+{
+    IConfiguration configuration = new ConfigurationBuilder()
+        .SetBasePath(path)
+        .AddJsonFile(settingsDev, optional: false)
+        .Build();
+
+    IBot bot = new Bot(configuration);
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.ToString());
+}
 Console.ReadLine();
