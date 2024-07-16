@@ -1,7 +1,9 @@
 ﻿using ChatBot.Http.Bot.Config;
 using ChatBot.Http.Bot.Enums;
+using ChatBot.Http.Bot.Jokes;
 using ChatBot.Interfaces.Client;
 using EnumStringValues;
+using JokeAPIWrapper.Models;
 using Microsoft.Extensions.Configuration;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
@@ -33,37 +35,74 @@ namespace ChatBot.Http.Bot.Client
 
         public void OnLog(object sender, OnLogArgs e)
         {
-            Console.WriteLine($"{e.DateTime.ToString()}: {e.BotUsername} - {e.Data}");
+            //Console.WriteLine($"{e.DateTime.ToString()}: {e.BotUsername} - {e.Data}");
         }
 
         public void OnConnected(object sender, OnConnectedArgs e)
         {
-            Console.WriteLine($"Connected to {_botConfig.ChannelName}");
-            _client.SendMessage(_botConfig.ChannelName, $"Connected {_botConfig.ChannelName} - {DateTime.Now}");
+            //Console.WriteLine($"Connected to {_botConfig.ChannelName}");
+            //_client.SendMessage(_botConfig.ChannelName, $"Connected {_botConfig.ChannelName} - {DateTime.Now}");
         }
 
         public void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
-            Console.WriteLine("Hey guys! I am a bot connected via TwitchLib!");
-            _client.SendMessage(e.Channel, "Hey guys! I am a bot connected via TwitchLib!");
+            //Console.WriteLine("Hey guys! I am a bot connected via TwitchLib!");
+            //_client.SendMessage(e.Channel, "Hey guys! I am a bot connected via TwitchLib!");
         }
 
-        public void OnMessageReceived(object sender, OnMessageReceivedArgs e)
+        public async void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
-            if(!e.ChatMessage.Message.StartsWith('!'))
+            try
             {
-                return;
+                if (!e.ChatMessage.Message.StartsWith('!'))
+                {
+                    return;
+                }
+
+                string message = e.ChatMessage.Message.ToLower().Replace("!", "");
+
+                // switch не работает с динамическими строками из GetStringValue()
+                if (Commands.Joke.GetAllStringValues().Contains(message))
+                {
+                    var joke = await JokesAPI.GetJoke();
+
+                    // TODO: Перевод шутки
+                    if (joke?.GetType() == typeof(SingleJokeModel))
+                    {
+                        var singleJokeModel = joke as SingleJokeModel;
+                        _client.SendMessage(_botConfig.ChannelName, singleJokeModel?.Joke);
+                    }
+                    else
+                    {
+                        var twoPartJokeModel = joke as TwoPartJokeModel;
+                        _client.SendMessage(_botConfig.ChannelName, "1/2: " + twoPartJokeModel?.Setup);
+                        await Task.Delay(1000);
+                        _client.SendMessage(_botConfig.ChannelName, "2/2: " + twoPartJokeModel?.Delivery);
+                    }
+                }
+
+                // TODO: Можно добавить поддержку остальных языков
+                if (Commands.ChangeLanguage.GetAllStringValues().Contains(message.Split(' ')[0]))
+                {
+                    string lang = message.Split(' ')[1];
+                    if (string.IsNullOrEmpty(lang))
+                    {
+                        return;
+                    }
+
+                    _ = lang switch
+                    {
+                        "ru" => _botConfig.Languages = Languages.RU,
+                        "en" => _botConfig.Languages = Languages.EN,
+                        _ => throw new NotImplementedException($"Язык '{lang}' не поддерживается"),
+                    };
+
+                }
             }
-
-            string message = e.ChatMessage.Message.ToLower().Replace("!","");
-
-            // switch не работает с динамическими строками из GetStringValue()
-            if (Commands.Joke.GetAllStringValues().Contains(message))
-            {
-                // TODO: Отправить шутку
-                _client.SendMessage(_botConfig.ChannelName, $"Шутка пришла ахах {_botConfig.ChannelName} - {DateTime.Now}");
+            catch (Exception ex) 
+            { 
+                Console.WriteLine(ex.ToString());
             }
-
             //if (e.ChatMessage.Message.Contains("bad"))
             //  _client.TimeoutUser(e.ChatMessage.Channel, e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!");
         }
@@ -112,6 +151,11 @@ namespace ChatBot.Http.Bot.Client
             _client.OnConnected += OnConnected;
 
             Console.WriteLine("События добавлены");
+        }
+
+        private void ChangeLanguage()
+        {
+
         }
     }
 }
