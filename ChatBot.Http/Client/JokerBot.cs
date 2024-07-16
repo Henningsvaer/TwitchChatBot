@@ -50,13 +50,18 @@ namespace ChatBot.Http.Bot.Client
 
         public void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
-            string message = e.ChatMessage.Message.ToLower();
+            if(!e.ChatMessage.Message.StartsWith('!'))
+            {
+                return;
+            }
+
+            string message = e.ChatMessage.Message.ToLower().Replace("!","");
 
             // switch не работает с динамическими строками из GetStringValue()
-            if (message == _specialCommandSymbol + Commands.Joke.GetStringValue())
+            if (Commands.Joke.GetAllStringValues().Contains(message))
             {
                 // TODO: Отправить шутку
-                _client.SendMessage(_botConfig.ChannelName, $"Тест {_botConfig.ChannelName} - {DateTime.Now}");
+                _client.SendMessage(_botConfig.ChannelName, $"Шутка пришла ахах {_botConfig.ChannelName} - {DateTime.Now}");
             }
 
             //if (e.ChatMessage.Message.Contains("bad"))

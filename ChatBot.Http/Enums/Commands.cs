@@ -8,7 +8,7 @@ namespace ChatBot.Http.Bot.Enums
         [StringValue("тест")]
         Test = 0,
 
-        [StringValue("Joke")]
+        [StringValue("joke"), StringValue("шутка")]
         Joke = 1,
     }
 }
