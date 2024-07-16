@@ -1,4 +1,6 @@
-﻿namespace ChatBot.Http.Bot.Enums
+﻿using EnumStringValues;
+
+namespace ChatBot.Http.Bot.Enums
 {
     /// <summary>
     /// Список основан на JokeAPI-CS-Wrapper/JokeAPIWrapper/Models/Enums.cs
@@ -6,12 +8,19 @@
     /// </summary>
     public enum Languages
     {
+        [StringValue("en")]
         EN,
+        [StringValue("es")]
         ES,
+        [StringValue("fr")]
         FR,
+        [StringValue("de")]
         DE,
+        [StringValue("pt")]
         PT,
+        [StringValue("cs")]
         CS,
+        [StringValue("ru")]
         RU
     }
 }

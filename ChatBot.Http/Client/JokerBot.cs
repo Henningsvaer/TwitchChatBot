@@ -1,6 +1,7 @@
 ﻿using ChatBot.Http.Bot.Config;
 using ChatBot.Http.Bot.Enums;
 using ChatBot.Http.Bot.Jokes;
+using ChatBot.Http.Bot.Translater;
 using ChatBot.Interfaces.Client;
 using EnumStringValues;
 using JokeAPIWrapper.Models;
@@ -70,14 +71,18 @@ namespace ChatBot.Http.Bot.Client
                     if (joke?.GetType() == typeof(SingleJokeModel))
                     {
                         var singleJokeModel = joke as SingleJokeModel;
-                        _client.SendMessage(_botConfig.ChannelName, singleJokeModel?.Joke);
+                        var translatedJoke = await TranslaterAPI.GetTranslate(_botConfig, singleJokeModel?.Joke);
+                        _client.SendMessage(_botConfig.ChannelName, translatedJoke);
                     }
                     else
                     {
                         var twoPartJokeModel = joke as TwoPartJokeModel;
-                        _client.SendMessage(_botConfig.ChannelName, "1/2: " + twoPartJokeModel?.Setup);
+                        var translatedSetup = await TranslaterAPI.GetTranslate(_botConfig, twoPartJokeModel?.Setup);
+                        var translatedDelivery = await TranslaterAPI.GetTranslate(_botConfig, twoPartJokeModel?.Delivery);
+
+                        _client.SendMessage(_botConfig.ChannelName, "1/2: " + translatedSetup);
                         await Task.Delay(1000);
-                        _client.SendMessage(_botConfig.ChannelName, "2/2: " + twoPartJokeModel?.Delivery);
+                        _client.SendMessage(_botConfig.ChannelName, "2/2: " + translatedDelivery);
                     }
                 }
 
@@ -92,8 +97,8 @@ namespace ChatBot.Http.Bot.Client
 
                     _ = lang switch
                     {
-                        "ru" => _botConfig.Languages = Languages.RU,
-                        "en" => _botConfig.Languages = Languages.EN,
+                        "ru" => _botConfig.Language = Languages.RU,
+                        "en" => _botConfig.Language = Languages.EN,
                         _ => throw new NotImplementedException($"Язык '{lang}' не поддерживается"),
                     };
 
@@ -127,7 +132,9 @@ namespace ChatBot.Http.Bot.Client
             {
                 BotName = _configuration.GetSection("identity:username").Value,
                 PasswordOAuth = _configuration.GetSection("identity:password").Value,
-                ChannelName = channelName
+                ChannelName = channelName,
+                TranslatorApiHost = _configuration.GetSection("rapidapi:host").Value,
+                TranslatorApiKey = _configuration.GetSection("rapidapi:key").Value
             };
 
             Console.WriteLine("Каналы добавлены");

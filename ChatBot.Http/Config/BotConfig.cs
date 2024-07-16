@@ -7,6 +7,8 @@ namespace ChatBot.Http.Bot.Config
         public string? ChannelName { get; set; }
         public string? BotName { get; set; }
         public string? PasswordOAuth { get; set; }
-        public Languages Languages { get; set; } = Languages.RU;
+        public Languages Language { get; set; } = Languages.RU;
+        public string? TranslatorApiKey { get; set; }
+        public string? TranslatorApiHost { get; set; }
     }
 }
