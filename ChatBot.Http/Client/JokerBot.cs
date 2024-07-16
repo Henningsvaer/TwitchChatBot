@@ -166,6 +166,7 @@ namespace ChatBot.Http.Bot.Client
             Console.WriteLine("События добавлены");
         }
 
+        // TODO: Смена языка
         private void ChangeLanguage()
         {
 
