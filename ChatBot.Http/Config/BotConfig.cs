@@ -2,8 +2,8 @@
 {
     public class BotConfig
     {
-        public List<string> ChannelNames { get; set; } = new();
-        public string BotName { get; set; }
-        public string PasswordOAuth { get; set; }
+        public string? ChannelName { get; set; }
+        public string? BotName { get; set; }
+        public string? PasswordOAuth { get; set; }
     }
 }
