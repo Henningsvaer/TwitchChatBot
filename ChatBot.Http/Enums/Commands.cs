@@ -5,8 +5,8 @@ namespace ChatBot.Http.Bot.Enums
    
     public enum Commands
     {
-        [StringValue("тест")]
-        Test = 0,
+        [StringValue("info"), StringValue("инфо"), StringValue("инфа"), StringValue("about"), StringValue("о"), StringValue("o")]
+        InfoAboutBot = 0,
 
         [StringValue("joke"), StringValue("шутка")]
         Joke = 1,

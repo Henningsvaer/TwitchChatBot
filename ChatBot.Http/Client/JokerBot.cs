@@ -72,7 +72,7 @@ namespace ChatBot.Http.Bot.Client
                     {
                         var singleJokeModel = joke as SingleJokeModel;
                         var translatedJoke = await TranslaterAPI.GetTranslate(_botConfig, singleJokeModel?.Joke);
-                        _client.SendMessage(_botConfig.ChannelName, translatedJoke);
+                        _client.SendMessage(_botConfig.ChannelName, translatedJoke + " Maaaan");
                     }
                     else
                     {
@@ -80,9 +80,9 @@ namespace ChatBot.Http.Bot.Client
                         var translatedSetup = await TranslaterAPI.GetTranslate(_botConfig, twoPartJokeModel?.Setup);
                         var translatedDelivery = await TranslaterAPI.GetTranslate(_botConfig, twoPartJokeModel?.Delivery);
 
-                        _client.SendMessage(_botConfig.ChannelName, "1/2: " + translatedSetup);
-                        await Task.Delay(1000);
-                        _client.SendMessage(_botConfig.ChannelName, "2/2: " + translatedDelivery);
+                        _client.SendMessage(_botConfig.ChannelName, "1/2: " + translatedSetup + " eeeh ");
+                        await Task.Delay(2000);
+                        _client.SendMessage(_botConfig.ChannelName, "2/2: " + translatedDelivery + " Maaaan");
                     }
                 }
 
@@ -102,6 +102,11 @@ namespace ChatBot.Http.Bot.Client
                         _ => throw new NotImplementedException($"Язык '{lang}' не поддерживается"),
                     };
 
+                }
+
+                if (Commands.InfoAboutBot.GetAllStringValues().Contains(message))
+                {
+                    _client.SendMessage(_botConfig.ChannelName, _botConfig.InfoAboutBot);
                 }
             }
             catch (Exception ex) 
@@ -134,7 +139,8 @@ namespace ChatBot.Http.Bot.Client
                 PasswordOAuth = _configuration.GetSection("identity:password").Value,
                 ChannelName = channelName,
                 TranslatorApiHost = _configuration.GetSection("rapidapi:host").Value,
-                TranslatorApiKey = _configuration.GetSection("rapidapi:key").Value
+                TranslatorApiKey = _configuration.GetSection("rapidapi:key").Value,
+                InfoAboutBot = _configuration.GetSection("info").Value
             };
 
             Console.WriteLine("Каналы добавлены");

@@ -10,5 +10,6 @@ namespace ChatBot.Http.Bot.Config
         public Languages Language { get; set; } = Languages.RU;
         public string? TranslatorApiKey { get; set; }
         public string? TranslatorApiHost { get; set; }
+        public string? InfoAboutBot { get; set; }
     }
 }
