@@ -1,5 +1,4 @@
 ﻿using ChatBot.Http.Bot.Client;
-using ChatBot.Http.Bot.Config;
 using ChatBot.Interfaces.Client;
 using Microsoft.Extensions.Configuration;
 
