@@ -11,3 +11,6 @@ Create acc for your bot on twitch and register it on dev console
 - https://rapidapi.com/microsoft-azure-org-microsoft-cognitive-services/api/microsoft-translator-text
 
 Free characters 500k/month
+
+## 3. Program.cs
+Add path to appsettings.json
