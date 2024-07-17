@@ -108,6 +108,24 @@ namespace ChatBot.Http.Bot.Client
                 {
                     _client.SendMessage(_botConfig.ChannelName, _botConfig.InfoAboutBot);
                 }
+
+                if (Commands.Commands.GetAllStringValues().Contains(message))
+                {
+                    var commands = Enum.GetValues(typeof(Commands)).Cast<Commands>().ToList();
+                    var result = string.Empty;
+
+                    foreach (var command in commands) 
+                    {
+                        var commandStrings = command.GetAllStringValues().ToList();
+
+                        for (int i = 0; i < commandStrings?.Count - 1; i++)
+                        {
+                            result += "!" + commandStrings?[i] + " ";
+                        }
+                        result += " ||| ";
+                    }
+                    _client.SendMessage(_botConfig.ChannelName, result);
+                }
             }
             catch (Exception ex) 
             { 

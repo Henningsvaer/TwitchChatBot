@@ -19,5 +19,8 @@ namespace ChatBot.Http.Bot.Enums
         /// </summary>
         [StringValue("lang"), StringValue("язык")]
         ChangeLanguage = 2,
+
+        [StringValue("commands"), StringValue("команды")]
+        Commands = 3,
     }
 }
