@@ -4,8 +4,8 @@ using Microsoft.Extensions.Configuration;
 
 var path = $"C:\\Users\\henni\\OneDrive\\Документы\\GitHub\\TwitchChatBot\\ChatBot\\Config";
 var settingsDev = "appsettings.Development.json";
-var channels = new List<string>();
-
+List<string> channels = new();
+List<IBot> botsPull = new();
 
 try
 {
@@ -23,7 +23,10 @@ try
         channels.Add(item.Value);
     }
 
-    IBot bot = new JokerBot(configuration, channels[1]);
+    foreach (var channel in channels)
+    {
+        botsPull.Add(new JokerBot(configuration, channel));
+    }
 }
 catch (Exception ex)
 {
