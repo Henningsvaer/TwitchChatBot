@@ -161,7 +161,7 @@ namespace ChatBot.Http.Bot.Client
                 InfoAboutBot = _configuration.GetSection("info").Value
             };
 
-            Console.WriteLine("Каналы добавлены");
+            Console.WriteLine($"Bot:{_botConfig.BotName} - Channel:{_botConfig.ChannelName} - Каналы добавлены");
 
             _connectionCredentials = new ConnectionCredentials(_botConfig.BotName, _botConfig.PasswordOAuth);
             _clientOptions = new ClientOptions
@@ -169,7 +169,7 @@ namespace ChatBot.Http.Bot.Client
                 MessagesAllowedInPeriod = 750,
                 ThrottlingPeriod = TimeSpan.FromSeconds(30)
             };
-            Console.WriteLine("Доступы добавлены");
+            Console.WriteLine($"Bot:{_botConfig.BotName} - Channel:{_botConfig.ChannelName} - Доступы добавлены");
         }
 
         private void AddEvents()
@@ -181,7 +181,7 @@ namespace ChatBot.Http.Bot.Client
             _client.OnNewSubscriber += OnNewSubscriber;
             _client.OnConnected += OnConnected;
 
-            Console.WriteLine("События добавлены");
+            Console.WriteLine($"Bot:{_botConfig.BotName} - Channel:{_botConfig.ChannelName} - События добавлены");
         }
 
         // TODO: Смена языка
