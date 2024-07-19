@@ -13,4 +13,4 @@ Create acc for your bot on twitch and register it on dev console
 Free characters 500k/month
 
 ## 3. Program.cs
-Add path to appsettings.json
+Add path to appsettings.json or appsettings.Development.json
