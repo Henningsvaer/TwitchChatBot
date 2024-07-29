@@ -22,5 +22,8 @@ namespace ChatBot.Http.Bot.Enums
 
         [StringValue("commands"), StringValue("команды")]
         Commands = 3,
+
+        [StringValue("leesdelete"), StringValue("лисудали")]
+        DeleteThis = 4,
     }
 }
