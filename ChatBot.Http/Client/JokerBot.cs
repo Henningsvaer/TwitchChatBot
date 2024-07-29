@@ -67,7 +67,6 @@ namespace ChatBot.Http.Bot.Client
                 {
                     var joke = await JokesAPI.GetJoke();
 
-                    // TODO: Перевод шутки
                     if (joke?.GetType() == typeof(SingleJokeModel))
                     {
                         var singleJokeModel = joke as SingleJokeModel;
@@ -82,7 +81,7 @@ namespace ChatBot.Http.Bot.Client
 
                         _client.SendMessage(_botConfig.ChannelName, "1/2: " + translatedSetup + " eeeh ");
                         await Task.Delay(2000);
-                        _client.SendMessage(_botConfig.ChannelName, "2/2: " + translatedDelivery + " Maaaan");
+                        _client.SendMessage(_botConfig.ChannelName, "2/2: " + translatedDelivery + " Maaaan ");
                     }
                 }
 
@@ -107,6 +106,13 @@ namespace ChatBot.Http.Bot.Client
                 if (Commands.InfoAboutBot.GetAllStringValues().Contains(message))
                 {
                     _client.SendMessage(_botConfig.ChannelName, _botConfig.InfoAboutBot);
+                }
+
+                // TODO: Подтягивать случайные ascii картинки из json
+                if (Commands.DeleteThis.GetAllStringValues().Contains(message))
+                {
+                    string ascii = "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⣛⣩⡭⣬⣭⣍⠙⠻⣿⣿⣿⣿⣿x ⣿⣿⣿⣿⣿⣿⣿⣿⡿⢋⣴⢻⣿⣷⢹⣌⢯⢿⠝⢣⡘⣿⣿⣿⣿x ⣿⣿⣿⣿⣿⣿⣿⣿⢡⣿⣿⣸⣿⣿⣧⢻⠄⠟⠁⠄⠚⠸⣿⣿⣿x ⣿⣿⣿⣿⢛⣿⠿⣿⢸⢿⣿⣆⢿⣷⠏⢸⠗⠄⣷⢠⡸⢁⢿⣿⣿x ⣿⣿⣿⣿⣼⡘⡄⣿⢸⢸⣿⠙⠈⠇⣤⣆⣢⡄⣷⠘⢱⡟⠈⡝⣿x ⣿⣿⣿⡿⢑⢧⡇⢿⢸⡀⠂⡐⢴⣾⣿⣿⣿⡇⡜⠄⡋⢣⣀⣴⡆x ⣿⣿⣿⣇⢣⣵⣮⢊⣧⢁⡆⠹⠈⠛⠽⠷⠟⠄⡉⢠⠄⣼⣯⡾⠣x ⣿⣿⣿⣿⡌⣿⢡⣿⡇⡆⡇⠄⠁⠄⠄⣠⣾⢰⠃⡼⢸⣿⢛⣤⣄x ⣿⣿⣿⣿⢃⣿⠸⣿⡧⣡⢶⠅⠄⢀⡰⣿⣿⠈⠄⠃⣿⡇⢸⣿⣿x ⣿⣿⣿⡟⣸⠿⢃⣋⣨⣭⠕⣂⣤⣴⣾⣿⣿⣦⣤⢰⣿⡇⡸⣿⡿x ⣿⣿⡿⢃⣵⣾⣿⣿⡿⣣⣾⣿⣿⣿⣿⣿⣿⣿⡿⢸⣿⡇⠁⢹⠇x ⡿⢫⣴⣿⣿⣿⣿⡿⢱⣿⣿⣿⠿⣿⣿⣿⣿⣿⢃⣿⣿⡇⡇⠈⢰x ⣧⠻⣿⣿⣿⣿⣿⡇⢿⣿⣿⣿⣿⣿⣿⣿⣿⡟⣸⣿⣿⡇⡇⢈⠁x ⣿⣧⠹⣿⣿⣿⣿⣿⠘⢿⣿⣿⣿⣿⣿⣿⡿⠃⣿⣿⣿⡇⠄⡼⢸x ⣿⣿⣷⣬⣛⡛⠛⣡⣾⣦⣙⡛⠿⠿⠟⣫⣷⡇⢻⣿⠟⠡⢔⢀⣿x ⣿⣿⣿⣿⡟⠄⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⡀⣰⠁⣾⢄⣾⣿x ⣿⣿⡿⣋⠈⠄⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠄⠄⢹⡜⢣⣾⣿⣿x ⣿⣿⣿⣿⢨⣇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣘⠹⡇⣿⣿⣿⣿x";
+                    _client.SendMessage(_botConfig.ChannelName, ascii);
                 }
 
                 if (Commands.Commands.GetAllStringValues().Contains(message))
