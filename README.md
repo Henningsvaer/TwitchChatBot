@@ -1,4 +1,5 @@
 # TwitchChatBot
+## Bot translate jokes from lang to lang and send it in twitch chat
 
 ## 0. Add all info to appsettings.Development.json
 
